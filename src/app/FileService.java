@@ -24,18 +24,10 @@ public class FileService<E extends Salable>
 	public ArrayList<E> readInventoryJson(String filename) throws IOException
 	{
 		Salable[] inventory = null;
-		try
-		{
-			// Read a string of JSON from a file and convert to an array of Cars (could have used ArrayList as well)
-			ObjectMapper objectMapper = new ObjectMapper();
-			inventory = objectMapper.readValue(new File(filename), Salable[].class);
-		}
-		catch (IOException e)
-		{
-			// Print exception
-			e.printStackTrace();
-			
-		}
+		
+		// Read a string of JSON from a file and convert to an array of Cars (could have used ArrayList as well)
+		ObjectMapper objectMapper = new ObjectMapper();
+		inventory = objectMapper.readValue(new File(filename), Salable[].class);
 		
 		ArrayList<E> stock = new ArrayList<E>();
 		for(int i = 0; i < inventory.length; i++)
@@ -56,30 +48,21 @@ public class FileService<E extends Salable>
 	public void saveToFile(String filename, E[] inventory) throws IOException
 	{
 		PrintWriter pw;
-		try
-		{
-			// Create a file File to write
-			File file = new File(filename);
-			FileWriter fw = new FileWriter(file);
-			pw = new PrintWriter(fw);
-			
-			// Convert Cars array to JSON (could have used ArrayList as well)
-			ObjectMapper objectMapper = new ObjectMapper();
-			String json = objectMapper.writeValueAsString(inventory);
+	
+		// Create a file File to write
+		File file = new File(filename);
+		FileWriter fw = new FileWriter(file);
+		pw = new PrintWriter(fw);
+		
+		// Convert Cars array to JSON (could have used ArrayList as well)
+		ObjectMapper objectMapper = new ObjectMapper();
+		String json = objectMapper.writeValueAsString(inventory);
 
-			// Write Car as JSON
-			pw.println(json);
-			
-			// Cleanup
-			// Discussion: What's wrong with this code?
-			pw.close();
-		}
-		catch (IOException e)
-		{
-			// Print exception
-			// Discussion: What's wrong with this code?
-			e.printStackTrace();
-			// throw new CustomException()
-		}	
+		// Write Car as JSON
+		pw.println(json);
+		
+		// Cleanup
+		pw.close();
+		
 	}
 }

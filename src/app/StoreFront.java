@@ -10,22 +10,24 @@ public class StoreFront
 {
 	private InventoryManager<Salable> manager;
 	private Cart<Salable> cart;
+	private ServerThread server;
 	
 	/**
-	 * Constructor for initializing the manager and the cart.
+	 * General constructor.
 	 */
 	StoreFront()
 	{	
-		try
-		{
-			manager = new InventoryManager<Salable>();
-			cart = new Cart<Salable>();
-		}
-		catch(Exception IOException)
-		{
-			System.out.println("There was a problem creating manager and cart, due to file reading error");
-		}
-
+	}
+	
+	/**
+	 * Creates a new server thread and starts it to run parallel to main application and to take commands from admin application.
+	 */
+	public void startServer()
+	{
+		System.out.println("Running Server Thread\n");
+		
+		server = new ServerThread(this.manager);
+		server.start();
 	}
 	
 	/**
@@ -33,6 +35,21 @@ public class StoreFront
 	 */
 	public void beginShopping()
 	{
+		// initialize cart and manager
+		try
+		{
+			manager = new InventoryManager<Salable>();
+			manager.pullInventoryJson();
+		} catch (IOException e)
+		{
+			System.out.println("There was an issue creating the inventory manager.");
+			e.printStackTrace();
+		}
+		cart = new Cart<Salable>();
+		
+		// start server to talk with admin application
+		this.startServer();
+		
 		// Display the name of shop and the welcome message
 		System.out.println("-----------SHOP OF THE AGES------------");
 		System.out.println("Thank you for coming to our shop, feel free to look around and enjoy the selection, REMEMBER shoplifters get hung on sight!");
@@ -61,8 +78,7 @@ public class StoreFront
 					try
 					{
 						cart.addItem(manager.getProduct(input, num));
-					}
-					catch(Exception IllegalArgumentException)
+					} catch(Exception IllegalArgumentException)
 					{
 						System.out.println("Please enter a valid name and number.\n");
 					}
@@ -109,12 +125,14 @@ public class StoreFront
 	
 	/**
 	 * Complete the purchase for the customer, clearing the cart.
+	 * @throws IOException 
 	 */
-	public void completePurchase()
+	public void completePurchase() throws IOException
 	{
 		System.out.println("Thank you for completing your purchase, here is your ordered items:\n");
 		cart.listItems();
 		cart.clearCart();
+		manager.saveInventory();
 	}
 	
 	/**

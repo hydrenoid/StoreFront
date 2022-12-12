@@ -20,13 +20,47 @@ public class InventoryManager<E extends Salable>
 	private ArrayList<E> stock;
 	
 	/**
-	 * Constructor for initialization of the fileService and to get the inventory.
-	 * @throws IOException Thrown when trouble reading json file
+	 * Basic constructor
 	 */
-	InventoryManager() throws IOException
+	InventoryManager()
+	{
+	}
+	
+	/**
+	 * Creates a file service object and goes and reads the inventory json and sets it as the current inventory.
+	 * 
+	 * @throws IOException If there is a problem opening the file.
+	 */
+	public void pullInventoryJson() throws IOException
 	{
 		FileService<Salable> fileService = new FileService<Salable>();
 		this.stock = (ArrayList<E>) fileService.readInventoryJson("inventory.json");
+	}
+	
+	/**
+	 * Turns the salable ArrayList into a basic array so it can be jsonofied and sent from the server.
+	 * 
+	 * @return The array of salables of current inventory.
+	 */
+	public Salable[] getInventory()
+	{
+		Salable[] temp = new Salable[this.stock.size()];
+		for(int i = 0; i < this.stock.size(); i++)
+		{
+			temp[i] = this.stock.get(i);
+		}
+		return temp;
+	}
+	
+	/**
+	 * Send inventory to json file service to be saved and overwrite old inventory json.
+	 * 
+	 * @throws IOException When error opening file.
+	 */
+	public void saveInventory() throws IOException
+	{
+		FileService<Salable> fileService = new FileService<Salable>();
+		fileService.saveToFile("inventory.json", getInventory());
 	}
 	
 	/**
@@ -203,5 +237,14 @@ public class InventoryManager<E extends Salable>
 			}
 		}
 	}
-
+	
+	/**
+	 * Replace the current inventory with a new one.
+	 * 
+	 * @param inventory Is the inventory to replace the current one.
+	 */
+	public void setInventory(ArrayList<E> inventory)
+	{
+		this.stock = inventory;
+	}
 }
