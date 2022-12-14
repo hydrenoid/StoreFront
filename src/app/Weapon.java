@@ -25,7 +25,7 @@ public class Weapon extends Salable {
 	 * @param damage How much damage the weapon does.
 	 * @param material What material the weapon is made out of.
 	 */
-	Weapon(String name, String description, double price, int quantity, int damage, String material) {
+	public Weapon(String name, String description, double price, int quantity, int damage, String material) {
 		super(name, description, price, quantity);
 		this.damage = damage;
 		this.material = material;

@@ -25,7 +25,7 @@ public class Armor extends Salable{
 	 * @param armorValue How much armorValue it has.
 	 * @param material What the armor is made out of.
 	 */
-	Armor(String name, String description, double price, int quantity, int armorValue, String material) {
+	public Armor(String name, String description, double price, int quantity, int armorValue, String material) {
 		super(name, description, price, quantity);
 		this.armorValue = armorValue;
 		this.material = material;

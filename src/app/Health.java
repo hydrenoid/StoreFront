@@ -25,7 +25,7 @@ public class Health extends Salable{
 	 * @param hp Amount of health given.
 	 * @param isPermanent Whether the health is permanent or not.
 	 */
-	Health(String name, String description, double price, int quantity, int hp, boolean isPermanent) {
+	public Health(String name, String description, double price, int quantity, int hp, boolean isPermanent) {
 		super(name, description, price, quantity);
 		this.hp = hp;
 		this.isPermanent = isPermanent;

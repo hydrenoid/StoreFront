@@ -42,7 +42,7 @@ public class Salable implements Comparable<Salable>
 	 * @param price The price of the Salable per quantity.
 	 * @param quantity The number of this item in stock.
 	 */
-	Salable(String name, String description, double price, int quantity)
+	public Salable(String name, String description, double price, int quantity)
 	{
 		this.name = name;
 		this.description = description;
